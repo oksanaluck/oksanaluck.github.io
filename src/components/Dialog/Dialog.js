@@ -1,5 +1,5 @@
 import { h, Component } from 'preact'
-import './Dialog.css'
+import css from './Dialog.css'
 
 class Dialog extends Component {
     constructor(props) {
@@ -111,10 +111,10 @@ class Dialog extends Component {
         }
 
         return (
-            <div class="backdrop"
+            <div class={css.backdrop}
                  onClick={(e) => {this._mounted = false; this.props.onClose(e)}}>
 
-                <div class="modal" onClick={(e) => e.stopPropagation()}>
+                <div class={css.modal} onClick={(e) => e.stopPropagation()}>
                     {(loading || loading === undefined)
                         ? <p>Fetching...</p>
                         : <div>
