@@ -36,20 +36,23 @@ class Dialog extends Component {
                 .then((res) => this.setStateAsync({
                     loading: false
                 }))
+                .catch(() => this.setStateAsync({
+                    loading: false
+                }))
         }
     }
 
     _getSourceRepoInfo(fullName) {
-        fetch(`https://api.github.com/repos/${fullName}`)
+        return fetch(`https://api.github.com/repos/${fullName}`)
             .then((response) => response.json())
             .then((repoInfo) => this.setStateAsync({
-                source_url: repoInfo.source.html_url,
-                source_full_name: repoInfo.source.full_name
+                source_url: repoInfo.html_url,
+                source_full_name: repoInfo.full_name
             }))
     }
 
     _getContributors(fullName) {
-        fetch(`https://api.github.com/repos/${fullName}/contributors`)
+        return fetch(`https://api.github.com/repos/${fullName}/contributors`)
             .then((response) => response.json())
             .then((contributors) => this.setStateAsync({
                 contributors: contributors.slice(0, 3)
@@ -57,7 +60,7 @@ class Dialog extends Component {
     }
 
     _getLanguages(fullName) {
-        fetch(`https://api.github.com/repos/${fullName}/languages`)
+        return fetch(`https://api.github.com/repos/${fullName}/languages`)
             .then((response) => response.json())
             .then((languages) => {
                 const moreThanOneKbLanguages = {};
@@ -75,7 +78,7 @@ class Dialog extends Component {
     }
 
     _getPopularPullRequests(fullName) {
-        fetch(`https://api.github.com/repos/${fullName}/pulls?sort=popularity&per_page=5&direction=desc`)
+        return fetch(`https://api.github.com/repos/${fullName}/pulls?sort=popularity&per_page=5&direction=desc`)
             .then((response) => response.json())
             .then((popularPullRequests) => this.setStateAsync({
                 pullRequests: popularPullRequests
@@ -112,10 +115,10 @@ class Dialog extends Component {
                  onClick={(e) => {this._mounted = false; this.props.onClose(e)}}>
 
                 <div class="modal" onClick={(e) => e.stopPropagation()}>
-                    {loading
+                    {(loading || loading === undefined)
                         ? <p>Fetching...</p>
                         : <div>
-                            <h1><a target="_blank" href={repo.html_url}>{repo.name}</a></h1>
+                            <h1><a target="_blank" href={repo.repository.html_url}>{repo.repository.name}</a></h1>
                             {source_url &&
                             <h4 class="forked">Forked from <a target="_blank" href={source_url}>{source_full_name}</a></h4>}
 

@@ -1,5 +1,6 @@
 import { h, Component } from 'preact'
 import {Dialog} from '../Dialog/Dialog';
+import '../Dialog/Dialog.css'
 import './Repository.css'
 
 const formatDate = (date) => {
