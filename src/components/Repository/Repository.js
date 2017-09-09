@@ -1,7 +1,7 @@
 import { h, Component } from 'preact'
 import {Dialog} from '../Dialog/Dialog';
 import '../Dialog/Dialog.css'
-import './Repository.css'
+import css from './Repository.css'
 
 const formatDate = (date) => {
     let tmpDate = new Date(date);
@@ -37,8 +37,8 @@ class Repository extends Component {
 
     render({repository}, {shouldShowModal}) {
         return (
-            <div>
-                <ul>
+            <li class={css.listItem}>
+                <ul class={css.description}>
                     <li><a onClick={this.toggleModal.bind(this)} >{repository.name}</a></li>
                     <li>{'description '+repository.description || 'description is absent'}</li>
                     <li>{repository.fork ? 'forked' : 'not forked'}</li>
@@ -50,7 +50,7 @@ class Repository extends Component {
                     shouldShowModal={shouldShowModal}
                     repo={this.props}
                     onClose={this.toggleModal.bind(this)} />
-            </div>
+            </li>
         )
     }
 }

@@ -1,6 +1,7 @@
 import { h, Component } from 'preact'
 import Form from './Form/Form'
 import Card from './Card/Card'
+import './App.css'
 import Router from 'preact-router'
 
 export default class App extends Component {
@@ -10,7 +11,7 @@ export default class App extends Component {
             <div className="app">
                 <Router>
                     <Form path="/"/>
-                    <Card path="/:user" />
+                    <Card path="/:user?/:params?" />
                 </Router>
             </div>
         )
