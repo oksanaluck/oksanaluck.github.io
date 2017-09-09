@@ -150,10 +150,11 @@ export default class Card extends Component {
                             onSortOrder={this.changeSortOrder.bind(this)} />
 
                         <RepositoriesList repositories={sortedRepos} />
-                        <LoadButton
-                            shouldDisplayLoadMore={shouldDisplayLoadMore}
-                            onLoadMore={this.loadMore.bind(this)} />
-
+                        {(sortedRepos.length !== 0) ?
+                                <LoadButton
+                                shouldDisplayLoadMore={shouldDisplayLoadMore}
+                                onLoadMore={this.loadMore.bind(this)}/>
+                          : ''}
                     </div>
                 }
             </div>
