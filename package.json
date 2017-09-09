@@ -13,9 +13,7 @@
 	},
 	"keywords": [],
 	"author": "Oksana",
-	"pre-commit": [
-		"deploy"
-	],
+	"pre-commit": ["deploy"],
 	"license": "ISC",
 	"eslintConfig": {
 		"extends": "eslint-config-synacor"
