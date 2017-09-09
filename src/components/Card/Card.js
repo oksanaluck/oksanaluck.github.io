@@ -4,6 +4,7 @@ import {Sorting} from '../SortBar/SortBar'
 import {RepositoriesList} from "../RepositoriesList/RepositoriesList"
 import {LoadButton} from "../LoadButton/LoadButton";
 import css from './Card.css'
+import { handleErrors } from '../../utils/util'
 
 const reposPerPage = 10;
 
@@ -28,7 +29,8 @@ export default class Card extends Component {
                 by: 'name',
                 order: 'asc'
             },
-            currentPage: 1
+            currentPage: 1,
+            error : ''
         }
     }
 
@@ -38,6 +40,7 @@ export default class Card extends Component {
                 'Accept': 'application/vnd.github.mercy-preview+json'
             }
         })
+        .then(handleErrors)
         .then((response) => {
             const shouldDisplayLoadMore = response.headers.get('Link') && response.headers.get('Link').includes('rel="next"');
             this.setState({shouldDisplayLoadMore});
@@ -47,7 +50,8 @@ export default class Card extends Component {
             repos,
             loading: false,
             languages: (repos.map(r => r.language).filter(l => l).filter((v, i, a) => a.indexOf(v) === i))
-        }));
+        }))
+        .catch((e) => this.setState({error: e.message}))
     }
 
     updateState(filters) {
@@ -125,7 +129,7 @@ export default class Card extends Component {
         }));
     }
 
-    render({},  {loading, repos, filters, languages, sorting, shouldDisplayLoadMore}) {
+    render({},  {loading, repos, filters, languages, sorting, shouldDisplayLoadMore, error}) {
         const filteredRepos = repos && this.getFilteredRepositories(filters, repos);
         const sortedRepos = repos && this.getSortedRepositories(filteredRepos, sorting);
 
@@ -133,8 +137,8 @@ export default class Card extends Component {
             <div class={css.card}>
 
                 {loading
-                    ? <div>Please, wait</div> :
-                    <div>
+                    ?   (error) ? <div>{error}</div> : <div>Please, wait</div>
+                    : <div>
                         <Filters
                             languages={languages}
                             filters={filters}
