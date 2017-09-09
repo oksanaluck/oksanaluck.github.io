@@ -3,6 +3,7 @@ import {Filters} from '../Filters/Filters'
 import {Sorting} from '../SortBar/SortBar'
 import {RepositoriesList} from "../RepositoriesList/RepositoriesList"
 import {LoadButton} from "../LoadButton/LoadButton";
+import css from './Card.css'
 
 const reposPerPage = 10;
 
@@ -129,7 +130,7 @@ export default class Card extends Component {
         const sortedRepos = repos && this.getSortedRepositories(filteredRepos, sorting);
 
         return (
-            <div className="repositories">
+            <div class={css.card}>
 
                 {loading
                     ? <div>Please, wait</div> :
