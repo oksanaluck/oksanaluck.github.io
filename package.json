@@ -8,10 +8,14 @@
 		"start": "if-env NODE_ENV=dev && npm run -s serve || npm run -s dev",
 		"build": "preact build  --dest build --no-prerender",
 		"serve": "preact build && preact serve",
-		"dev": "preact watch"
+		"dev": "preact watch",
+		"deploy": "npm run build && gh-pages --dist build --branch master"
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Oksana",
+	"pre-commit": [
+		"deploy"
+	],
 	"license": "ISC",
 	"eslintConfig": {
 		"extends": "eslint-config-synacor"
@@ -19,7 +23,9 @@
 	"devDependencies": {
 		"eslint": "^4.5.0",
 		"eslint-config-synacor": "^1.1.0",
+		"gh-pages": "^1.0.0",
 		"if-env": "^1.0.0",
+		"pre-commit": "^1.2.2",
 		"preact-cli": "^1.4.1"
 	},
 	"dependencies": {
