@@ -1,9 +1,10 @@
 import { h, Component } from 'preact';
+import css from './SortBar.css'
 
 class Sorting extends Component {
     render( { sortingParams } ) {
         return (
-            <div>
+            <div class={css.sort}>
                 <span>Sort by</span>
                 <select onChange={(e) => this.props.onSortType(e.target.value)}>
                     <option value="name"
