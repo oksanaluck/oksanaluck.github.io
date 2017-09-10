@@ -4,7 +4,7 @@ import {Sorting} from '../SortBar/SortBar'
 import {RepositoriesList} from "../RepositoriesList/RepositoriesList"
 import {LoadButton} from "../LoadButton/LoadButton";
 import css from './Card.css'
-import { handleErrors } from '../../utils/util'
+import { handleErrors, getFilteredRepositories, getSortedRepositories } from '../../utils/util'
 
 const reposPerPage = 10;
 
@@ -70,44 +70,6 @@ export default class Card extends Component {
         });
     }
 
-    getSortedRepositories(repos, sorting) {
-        let {by, order} = sorting;
-        const sorted = [...repos];
-
-        switch (by) {
-            case 'name':
-                sorted.sort((a, b) => a[by].localeCompare(b[by]));
-                break;
-            case 'pushed_at':
-                sorted.sort((a, b) => new Date(a[by]) - new Date(b[by]));
-                break;
-            default:
-                sorted.sort((a, b) => a[by] - b[by]);
-                break;
-        }
-
-        order === 'desc' && sorted.reverse();
-
-        return sorted;
-    }
-
-    getFilteredRepositories({ hasOpenIssues, hasTopics, starredTimes, updatedAfter, repoType, language }, repos) {
-        return repos.filter(repo => {
-            return (hasOpenIssues ? !!repo.open_issues_count : true)
-                && (hasTopics ? !!repo.topics.length : true)
-                && repo.stargazers_count >= starredTimes
-                && (updatedAfter
-                    ? new Date(repo.pushed_at) > new Date(updatedAfter)
-                    : true)
-                && (repoType && repoType !== 'All'
-                    ? (repoType === 'Fork' ? repo.fork : !repo.fork)
-                    : true)
-                && (language && language !== 'All'
-                    ? repo.language === language
-                    : true)
-        });
-    }
-
     loadMore() {
         fetch(`https://api.github.com/users/${this.props.user}/repos?page=${this.state.currentPage+1}&per_page=${reposPerPage}`, {
             headers: {
@@ -130,8 +92,8 @@ export default class Card extends Component {
     }
 
     render({},  {loading, repos, filters, languages, sorting, shouldDisplayLoadMore, error}) {
-        const filteredRepos = repos && this.getFilteredRepositories(filters, repos);
-        const sortedRepos = repos && this.getSortedRepositories(filteredRepos, sorting);
+        const filteredRepos = repos && getFilteredRepositories(filters, repos);
+        const sortedRepos = repos && getSortedRepositories(filteredRepos, sorting);
 
         return (
             <div class={css.card}>
