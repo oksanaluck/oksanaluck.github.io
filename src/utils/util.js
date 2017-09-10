@@ -1,3 +1,5 @@
+import { route } from 'preact-router';
+
 const handleErrors = (response) => {
     if (!response.ok) {
         throw Error('User can not found');
@@ -43,4 +45,29 @@ const getSortedRepositories = (repos, sorting) => {
     return sorted;
 }
 
-export {handleErrors, getFilteredRepositories, getSortedRepositories}
+const changeSortingOrder = (sorting) => {
+    const url = new URL(location.href)
+    const params = url.searchParams
+    params.set('order', sorting.order)
+    route(url.pathname + url.search)
+}
+
+const changeSortingType = (sorting) => {
+    const url = new URL(location.href)
+    const params = url.searchParams
+    params.set('sort', sorting.by)
+    route(url.pathname + url.search)
+}
+
+const changeFilter = (filters) => {
+    const url = new URL(location.href)
+    const params = url.searchParams
+    for(let key in filters){
+        if(filters[key]){
+            params.set(key, filters[key])
+        }
+    }
+    route(url.pathname + url.search)
+}
+
+export {handleErrors, getFilteredRepositories, getSortedRepositories, changeSortingOrder, changeSortingType, changeFilter}

@@ -4,7 +4,13 @@ import {Sorting} from '../SortBar/SortBar'
 import {RepositoriesList} from "../RepositoriesList/RepositoriesList"
 import {LoadButton} from "../LoadButton/LoadButton";
 import css from './Card.css'
-import { handleErrors, getFilteredRepositories, getSortedRepositories } from '../../utils/util'
+import { handleErrors,
+         getFilteredRepositories,
+         getSortedRepositories,
+         changeSortingOrder,
+         changeSortingType,
+         changeFilter } from '../../utils/util'
+import { route } from 'preact-router';
 
 const reposPerPage = 10;
 
@@ -56,18 +62,21 @@ export default class Card extends Component {
 
     updateState(filters) {
         this.setState(filters);
+        changeFilter(filters.filters);
     }
 
     changeSortType(type) {
         this.setState({
             sorting: { ...this.state.sorting, by: type }
         });
+        changeSortingType(this.state.sorting);
     }
 
     changeSortOrder(order) {
         this.setState({
             sorting: {...this.state.sorting, order: order}
         });
+        changeSortingOrder(this.state.sorting);
     }
 
     loadMore() {

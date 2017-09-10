@@ -11,7 +11,7 @@ export default class App extends Component {
             <div className="app">
                 <Router>
                     <Form path="/"/>
-                    <Card path="/:user?/:params?" />
+                    <Card path="/:user" />
                 </Router>
             </div>
         )
